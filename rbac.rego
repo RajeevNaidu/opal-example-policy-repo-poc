@@ -1,5 +1,6 @@
 package app.rbac
 
+
 default allow = false
 
 allow {
@@ -24,7 +25,7 @@ allow {
 				}
     	})
 
-	print(response.hits.total.value)
+	print("response:"+response.hits.total.value)
 
 
 	# Find permissions for the user.
