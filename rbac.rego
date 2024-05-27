@@ -38,5 +38,5 @@ allow if {
     	# check customer has atleast one account 
     	user.noOfAccounts >= 1
     	# allow only read/write access to accounts or cards 
-    	contains(empoloyee_attributes[input.resource], input.access)
+    	empoloyee_attributes[input.resource] == input.access
 }
