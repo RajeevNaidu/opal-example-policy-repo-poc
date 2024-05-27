@@ -5,7 +5,6 @@ import rego.v1
 # context objects
 user_attributes := {
 	"alice": {"noOfAccounts": 1, "title": "customer"},
-	"alice": {"noOfAccounts": 1, "title": "customer"},
 	"bob": {"noOfAccounts": 0, "title": "employee"},
 	"Rebecca": {"noOfAccounts": 0, "title": "advisor"}
 }
@@ -29,6 +28,7 @@ advisor_attributes := {
 }
 
 default allow := false
+default allow := false
 
 # allow read/write access when customer have atleast one account opened
 allow if {
@@ -39,5 +39,7 @@ allow if {
     # check customer has atleast one account 
     user.noOfAccounts >= 1
     # allow only read/write access to accounts or cards 
-    empoloyee_attributes[input.resource] contains input.access
+
+    contains(empoloyee_attributes(input.resource), input.access)
+
 }
