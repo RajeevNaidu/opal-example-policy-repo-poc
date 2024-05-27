@@ -15,6 +15,7 @@ ticker_attributes := {
 }
 
 default allow := false
+default allow_rajeev := false
 
 # all traders may buy NASDAQ under $2M
 allow if {
