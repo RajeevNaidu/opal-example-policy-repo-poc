@@ -1,7 +1,5 @@
 package app.rbac
 
-import data.http
-
 default allow = false
 
 allow {
