@@ -49,5 +49,5 @@ allow if {
 	
 	user.title == "advisor"
     
-    	employee_attributes[input.resource] == input.access
+    	advisor_attributes[input.resource] == input.access
 }
