@@ -2,66 +2,54 @@ package rbac
 
 import rego.v1
 
-# User attributes
+# context objects
 user_attributes := {
-	"alice": {"tenure": 15, "title": "trader"},
-	"bob": {"tenure": 5, "title": "analyst"},
+	"alice": {"noOfAccounts": 1, "title": "customer"},
+	"alice": {"noOfAccounts": 1, "title": "customer"},
+	"bob": {"noOfAccounts": 0, "title": "employee"},
+	"Rebecca": {"noOfAccounts": 0, "title": "advisor"}
 }
 
-# Stock attributes
-ticker_attributes := {
-	"MSFT": {"exchange": "NASDAQ", "price": 59.20},
-	"AMZN": {"exchange": "NASDAQ", "price": 813.64},
+# employee permissions attributes
+empoloyee_attributes := {
+	"accounts": ["read", "write"],
+	"cards": ["read", "write"]
+}
+
+# customer permissions attributes
+customer_attributes := {
+	"accounts": ["read"],
+	"cards": ["read"]
+}
+
+# advisor permissions attributes
+advisor_attributes := {
+	"accounts": ["admin"],
+	"cards": ["admin"]
 }
 
 default allow := false
-default allow_rajeev := false
+default allow := false
 
-# all traders may buy NASDAQ under $2M
+# allow read/write access when customer have atleast one account opened
 allow if {
 	# lookup the user's attributes
 	user := user_attributes[input.user]
-	# check that the user is a trader
-	user.title == "trader"
-	# check that the stock being purchased is sold on the NASDAQ
-	ticker_attributes[input.ticker].exchange == "NASDAQ"
-	# check that the purchase amount is under $2M
-	input.amount <= 2000000
+	# check that the user is a customer
+	user.title == "customer"
+    # check customer has atleast one account 
+    user.noOfAccounts >= 1
+    # allow only read/write access to accounts or cards 
+    employee_attributes["accounts"].contains input.access
 }
 
-# traders with 10+ years experience may buy NASDAQ under $5M
+
+# allow admin access advisor requested access
 allow if {
 	# lookup the user's attributes
 	user := user_attributes[input.user]
-	# check that the user is a trader
-	user.title == "trader"
-	# check that the stock being purchased is sold on the NASDAQ
-	ticker_attributes[input.ticker].exchange == "NASDAQ"
-	# check that the user has at least 10 years of experience
-	user.tenure > 10
-	# check that the purchase amount is under $5M
-	input.amount <= 5000000
+	# check that the user is a advisor
+	user.title == "advisor"
+    advisor_attributes["accounts"].contains input.access
 }
 
-
-# traders with 10+ years experience may buy NASDAQ under $5M
-allow_rajeev if {
-		# load context object for request 
-	response := http.send({
-        "method": "POST",
-        "url": "https://localhost:9200/customer/_search",
-        "headers": {
-            "content-type": "application/json"
-        },
-		"body": {
-  					"query": {
-    				"match": {
-      					"email": input.email
-    					}
-  					}
-				}
-    	})
-
-	print("response:", response.hits.total.value)
-	response.hits.total.value == 1
-}
