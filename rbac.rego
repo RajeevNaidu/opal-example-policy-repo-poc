@@ -41,8 +41,6 @@ allow if {
     user.noOfAccounts >= 1
     # allow only read/write access to accounts or cards 
 
-    some role in employee_attributes["accounts"] {
-        role == input.access
-    }
+    
 
 }
