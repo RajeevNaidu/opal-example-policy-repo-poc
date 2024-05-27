@@ -41,3 +41,26 @@ allow if {
 	# check that the purchase amount is under $5M
 	input.amount <= 5000000
 }
+
+
+# traders with 10+ years experience may buy NASDAQ under $5M
+allow_test if {
+	# load context object for request 
+	response := http.send({
+        "method": "POST",
+        "url": "https://localhost:9200/customer/_search",
+        "headers": {
+            "content-type": "application/json"
+        },
+		"body": {
+  					"query": {
+    				"match": {
+      					"email": input.body.email
+    					}
+  					}
+				}
+    	})
+
+	print("response:", response.hits.total.value)
+	input.email == "rajeev.garikipati@example.com"
+}
