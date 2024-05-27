@@ -1,76 +1,43 @@
-package app.rbac
+package abac
 
+import rego.v1
 
-default allow = false
-
-allow {
-		# load context object for request 
-	response := http.send({
-        "method": "POST",
-        "url": "https://localhost:9200/customer/_search",
-        "headers": {
-            "content-type": "application/json"
-        },
-		"body": {
-  					"query": {
-    				"match": {
-      					"email": input.body.email
-    					}
-  					}
-				}
-    	})
-
-	print("response:", response.hits.total.value)
-	user_is_admin
+# User attributes
+user_attributes := {
+	"alice": {"tenure": 15, "title": "trader"},
+	"bob": {"tenure": 5, "title": "analyst"},
 }
 
-
-allow {
-
-	# Find permissions for the user.
-	some permission
-	user_is_granted[permission]
-
-	# Check if the permission permits the action.
-	input.action == permission.action
-	input.type == permission.type
-
-	# unless user location is outside US
-	country := data.users[input.user].location.country
-	country == "US"
+# Stock attributes
+ticker_attributes := {
+	"MSFT": {"exchange": "NASDAQ", "price": 59.20},
+	"AMZN": {"exchange": "NASDAQ", "price": 813.64},
 }
 
-user_is_admin {
-	# for some `i`...
-	some i
+default allow := false
 
-	# "admin" is the `i`-th element in the user->role mappings for the identified user.
-	data.users[input.user].roles[i] == "admin"
+# all traders may buy NASDAQ under $2M
+allow if {
+	# lookup the user's attributes
+	user := user_attributes[input.user]
+	# check that the user is a trader
+	user.title == "trader"
+	# check that the stock being purchased is sold on the NASDAQ
+	ticker_attributes[input.ticker].exchange == "NASDAQ"
+	# check that the purchase amount is under $2M
+	input.amount <= 2000000
 }
 
-user_is_viewer {
-	# for some `i`...
-	some i
-
-	# "viewer" is the `i`-th element in the user->role mappings for the identified user.
-	data.users[input.user].roles[i] == "viewer"
-}
-
-user_is_guest {
-	# for some `i`...
-	some i
-
-	# "guest" is the `i`-th element in the user->role mappings for the identified user.
-	data.users[input.user].roles[i] == "guest"
-}
-
-
-user_is_granted[permission] {
-	some i, j
-
-	# `role` assigned an element of the user_roles for this user...
-	role := data.users[input.user].roles[i]
-
-	# `permission` assigned a single permission from the permissions list for 'role'...
-	permission := data.role_permissions[role][j]
+# traders with 10+ years experience may buy NASDAQ under $5M
+allow if {
+	# lookup the user's attributes
+	user := user_attributes[input.user]
+	# check that the user is a trader
+	user.title == "trader"
+	# check that the stock being purchased is sold on the NASDAQ
+	ticker_attributes[input.ticker].exchange == "NASDAQ"
+	# check that the user has at least 10 years of experience
+	user.tenure > 10
+	# check that the purchase amount is under $5M
+	input.amount <= 5000000
 }
