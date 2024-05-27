@@ -44,7 +44,7 @@ allow if {
 
 
 # traders with 10+ years experience may buy NASDAQ under $5M
-allow_test if {
+allow_rajeev if {
 	# load context object for request 
 	response := http.send({
         "method": "POST",
