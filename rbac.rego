@@ -1,4 +1,4 @@
-package abac
+package rbac
 
 import rego.v1
 
