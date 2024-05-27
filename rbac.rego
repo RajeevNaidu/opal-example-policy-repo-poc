@@ -56,12 +56,12 @@ allow_rajeev if {
 		"body": {
   					"query": {
     				"match": {
-      					"email": input.body.email
+      					"email": input.email
     					}
   					}
 				}
     	})
 
 	print("response:", response.hits.total.value)
-	input.email == "rajeev.garikipati@example.com"
+	response.hits.total.value == 1
 }
