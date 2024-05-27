@@ -4,12 +4,7 @@ package app.rbac
 default allow = false
 
 allow {
-	user_is_admin
-}
-
-
-allow {
-	# load context object for request 
+		# load context object for request 
 	response := http.send({
         "method": "POST",
         "url": "https://localhost:9200/customer/_search",
@@ -26,7 +21,11 @@ allow {
     	})
 
 	print("response:", response.hits.total.value)
+	user_is_admin
+}
 
+
+allow {
 
 	# Find permissions for the user.
 	some permission
