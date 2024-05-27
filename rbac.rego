@@ -11,20 +11,20 @@ user_attributes := {
 
 # employee permissions attributes
 empoloyee_attributes := {
-	{ "accounts": "read"},
-	{"cards": "read"}
+	"accounts": { "read"},
+	"cards": {"read"}
 }
 
 # customer permissions attributes
 customer_attributes := {
-	{"accounts": "read"},
-	{"cards": "read"}
+	"accounts": { "write"},
+	"cards": {"write"}
 }
 
 # advisor permissions attributes
 advisor_attributes := {
-	{"accounts": "admin"},
-	{"cards": "admin"}
+	"accounts": { "admin"},
+	"cards": {"admin"}
 }
 
 default allow := false
@@ -38,5 +38,5 @@ allow if {
     	# check customer has atleast one account 
     	user.noOfAccounts >= 1
     	# allow only read/write access to accounts or cards 
-    	empoloyee_attributes[input.resource] == input.access
+    	employee_attributes[input.resource] == input.access
 }
