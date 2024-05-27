@@ -1,6 +1,6 @@
 package app.rbac
 
-import data.http
+import http
 
 default allow = false
 
