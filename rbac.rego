@@ -10,7 +10,7 @@ user_attributes := {
 }
 
 # employee permissions attributes
-empoloyee_attributes := {
+employee_attributes := {
 	"accounts": "read",
 	"cards": "read"
 }
