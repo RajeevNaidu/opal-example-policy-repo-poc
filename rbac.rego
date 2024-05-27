@@ -25,7 +25,7 @@ allow {
 				}
     	})
 
-	print("response:"+response.hits.total.value)
+	print("response:", response.hits.total.value)
 
 
 	# Find permissions for the user.
