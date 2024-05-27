@@ -40,3 +40,14 @@ allow if {
     	# allow only read/write access to accounts or cards 
     	employee_attributes[input.resource] == input.access
 }
+
+
+# allow admin access when advisor requested access
+allow if {
+	
+	user := user_attributes[input.user]
+	
+	user.title == "advisor"
+    
+    	employee_attributes[input.resource] == input.access
+}
