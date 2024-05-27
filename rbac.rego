@@ -29,7 +29,6 @@ advisor_attributes := {
 }
 
 default allow := false
-default allow := false
 
 # allow read/write access when customer have atleast one account opened
 allow if {
