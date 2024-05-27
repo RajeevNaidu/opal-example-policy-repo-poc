@@ -40,16 +40,9 @@ allow if {
     # check customer has atleast one account 
     user.noOfAccounts >= 1
     # allow only read/write access to accounts or cards 
-    employee_attributes["accounts"].contains input.access
+
+    some role in employee_attributes["accounts"] {
+        role == input.access
+    }
+
 }
-
-
-# allow admin access advisor requested access
-allow if {
-	# lookup the user's attributes
-	user := user_attributes[input.user]
-	# check that the user is a advisor
-	user.title == "advisor"
-    advisor_attributes["accounts"].contains input.access
-}
-
