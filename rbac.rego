@@ -11,20 +11,20 @@ user_attributes := {
 
 # employee permissions attributes
 empoloyee_attributes := {
-	"accounts": { "read"},
-	"cards": {"read"}
+	"accounts": "read",
+	"cards": "read"
 }
 
 # customer permissions attributes
 customer_attributes := {
-	"accounts": { "write"},
-	"cards": {"write"}
+	"accounts": "write",
+	"cards": "write"
 }
 
 # advisor permissions attributes
 advisor_attributes := {
-	"accounts": { "admin"},
-	"cards": {"admin"}
+	"accounts": "admin",
+	"cards": "admin"
 }
 
 default allow := false
