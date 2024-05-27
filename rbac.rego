@@ -35,10 +35,8 @@ allow if {
 	user := user_attributes[input.user]
 	# check that the user is a customer
 	user.title == "customer"
-    # check customer has atleast one account 
-    user.noOfAccounts >= 1
-    # allow only read/write access to accounts or cards 
-
-    contains(empoloyee_attributes(input.resource), input.access)
-
+    	# check customer has atleast one account 
+    	user.noOfAccounts >= 1
+    	# allow only read/write access to accounts or cards 
+    	contains(empoloyee_attributes[input.resource], input.access)
 }
