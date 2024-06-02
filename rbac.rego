@@ -1,9 +1,9 @@
-package rbac
+package api.v1
 
 default allow = false
 
 
 # Allow bob to do anything
-allow {
+products {
 	input.user == "bob"
 }
