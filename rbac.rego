@@ -1,6 +1,6 @@
 package api.v1
 
-default allow = false
+default products = false
 
 
 # Allow bob to do anything
