@@ -23,15 +23,7 @@ import rego.v1
 
 default allow := false
 
-allow if {
-	
-	# local variable called `user_name` (used below).
-	some user_name
-
-	# The `=` operator in Rego performs pattern matching/unification. OPA finds
-	# variable assignments that satisfy this expression (as well as all of the other
-	# expressions in the same rule.)
-	input.parsed_path = ["headers", user_name]
-	user_name == "bob"
+allow if {	
+ input.attributes.request.http.method == "GET"
 }
 
