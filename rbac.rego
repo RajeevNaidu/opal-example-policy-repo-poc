@@ -19,22 +19,24 @@
 
 package app.rbac
 
-# import data.utils
+import rego.v1
 
-# By default, deny requests
-default allow = false
+default allow := false
 
-allow {
-    # Get the query parameters from the input object
-    query_params = input.attributes.request.http.query
+allow if {
+	# The `some` keyword declares local variables. This example declares a local
+	# variable called `user_name` (used below).
+	some user_name
 
-    # Parse the query parameters into a key-value map
-    query_map = http.parse_query_string(query_params)
+	input.attributes.request.http.method == "GET"
 
-    # Access a specific query parameter
-    some_value = query_map["user"]
+	# The `=` operator in Rego performs pattern matching/unification. OPA finds
+	# variable assignments that satisfy this expression (as well as all of the other
+	# expressions in the same rule.)
+	input.parsed_path = ["headers", "users", user_name]
 
-    # Apply a condition
-    some_value == "bob"
+	# Check if the `user_name` from path is the same as the username from the
+	# credentials.
+	user_name == "bob"
 }
 
