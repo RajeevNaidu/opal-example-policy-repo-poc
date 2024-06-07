@@ -31,10 +31,7 @@ allow if {
 	# The `=` operator in Rego performs pattern matching/unification. OPA finds
 	# variable assignments that satisfy this expression (as well as all of the other
 	# expressions in the same rule.)
-	input.parsed_path = ["headers", "users", user_name]
-
-	# Check if the `user_name` from path is the same as the username from the
-	# credentials.
+	input.parsed_path = ["headers", user_name]
 	user_name == "bob"
 }
 
