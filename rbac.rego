@@ -24,11 +24,9 @@ import rego.v1
 default allow := false
 
 allow if {
-	# The `some` keyword declares local variables. This example declares a local
-	# variable called `user_name` (used below).
+	
+	# local variable called `user_name` (used below).
 	some user_name
-
-	input.attributes.request.http.method == "GET"
 
 	# The `=` operator in Rego performs pattern matching/unification. OPA finds
 	# variable assignments that satisfy this expression (as well as all of the other
