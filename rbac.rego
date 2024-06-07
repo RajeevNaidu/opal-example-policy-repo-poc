@@ -24,11 +24,6 @@ import rego.v1
 default allow := false
 
 allow if {
-
-	some user_name
-
 	input.attributes.request.http.method == "GET"
-	input.parsed_path = ["headers", "users", user_name]
-	user_name == "bob"
 }
 
