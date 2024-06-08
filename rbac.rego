@@ -21,9 +21,12 @@ package app.rbac
 
 import rego.v1
 
-default allow := false
+# import data.utils
 
-allow if {
-	input.attributes.request.http.method == "GET"
+default allow = false
+
+allow {
+    input.attributes.request.http.method == "PUT"
+    input.attributes.request.body.user == "bob"
 }
 
