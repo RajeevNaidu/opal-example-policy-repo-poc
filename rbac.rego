@@ -25,6 +25,6 @@ default allow = false
 
 allow if {
     input.attributes.request.http.method == "PUT"
-    input.parser_body.user == "bob"
+    input.parsed_body.user == "bob"
 }
 
